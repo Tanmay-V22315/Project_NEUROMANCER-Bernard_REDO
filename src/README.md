@@ -1,5 +1,5 @@
  
-# <u> Project NEUROMANCER </u>
+# <u> Project-NEUROMANCER </u>
 
 ### <u>Introduction:</u>
 So, this is a redo of the previous **Project NEUROMANCER** (formerly **BRIGHTNICK7000**). **That** was *scrapped* due to archaic, terrible, absolutely horrendous and bodgy code management. 
@@ -20,9 +20,10 @@ In that step, the following *"corrections"* have been made
 - A new TTS model (Thanks to [Coqui TTS](https://github.com/coqui-ai/TTS)), ditching the older "Proof-Of-Concept" Cortana version, which used tacotron2, which from my "research", is slower than Glow-TTS. (Also it doesn't sound that good)
 - A more user-friendly and understandable config file.
 - Take heed regarding licensing stuff, (I didn't get into any trouble last time, but just to stay safe)
+- Handle Directories better
 
 
-
+- ## Granular Roadmap:
 ### Currently working on:
 - [ ] <u> **Text to speech** </u>:
 - *Roadmap*:
@@ -43,6 +44,6 @@ In that step, the following *"corrections"* have been made
 (P.S there's no particular reason for this order. I just randomly selected them since they are all isolated from each other anyway, in a manner of speaking.)
 
 
-## Devlogs:
+- ## Devlogs:
 
 Here you can see my sanity waning.....and also see me finding out about some cool stuff along the way:
