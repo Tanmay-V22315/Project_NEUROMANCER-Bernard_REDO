@@ -1,0 +1,5 @@
+nltk==3.6.2
+sounddevice==0.4.1
+hjson==3.0.2
+numpy==1.18.5
+pandas==1.2.3
