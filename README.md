@@ -15,11 +15,17 @@ make
 This will handle all of the installation stuff for you, including the dependencies. If you want to compile the Rust code on a custom platform, you can do that too with the flag `--compile-all` <!-- TODO -->
 
 Directories structure:
+*(as of 25/07/2021)*
 ```
+.
+├── credits_and_sources
+│   ├── people.txt
+│   └── websites.txt
 ├── LICENSE
 ├── MakeFile
 ├── README.md
 ├── setup
+│   └── requirements.txt
 └── src
     ├── ASR
     │   ├── model
@@ -31,14 +37,23 @@ Directories structure:
     ├── README.md
     ├── utils
     └── Voice
+        ├── installation
+        │   └── TTSinstallationforArch_based.sh
         ├── model
         │   ├── config.json
-        │   └── model_file.pth.tar
-        ├── __pycache__
-        │   └── TTS.cpython-38.pyc
+        │   ├── model_file.pth.tar
+        │   └── training_utils
+        │       ├── AutoFiletranscriber.py
+        │       ├── LjSpeechTrainer.ipynb
+        │       └── README.md
         ├── README.md
         ├── resources.json
+        ├── utils
+        │   ├── modeltest.py
+        │   ├── SSMLPostprocessor.py
+        │   └── SSMLres.json
         └── voice.py
 
-11 directories, 12 files
+14 directories, 21 files
+
 ```
