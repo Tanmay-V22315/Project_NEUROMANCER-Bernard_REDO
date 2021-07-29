@@ -1,4 +1,3 @@
-from io import TextIOBase
 import sys
 
 def getTextInBetween(inputtext, tagstart, tagend):
@@ -57,7 +56,7 @@ def pauseProcessor(inputstring):
     for _ in range(0,inputstring.count("<pause>")):
         toBeProcessed = proccache[-1]
         try:
-            duration = floatd(getTextInBetween(toBeProcessed, "<pause>", "</pause>").replace(" ",""))
+            duration = float(getTextInBetween(toBeProcessed, "<pause>", "</pause>").replace(" ",""))
             beginningChunk=toBeProcessed[0:toBeProcessed.index("<pause>")]
             endingChunk=toBeProcessed[toBeProcessed.index("</pause>")+len("</pause>"):]
             responselist.append(beginningChunk)
