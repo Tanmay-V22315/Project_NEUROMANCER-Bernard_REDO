@@ -61,8 +61,8 @@ To use the SSML functionality, you must first realize that the syntax is homegro
     - The `<spell-it>` tag will split the phrase enclosed within these tags to its individual characters 
     Example:
     `The word Organization in American English is spelt as: <spell-it>Organization</spell-it>` &#8594; `The word Organization in American English is spelt as: O r g a n i z a t i o n.`
-    - The <cardinal> tag (must be closed with </cardinal>)
-    - NOTE: The dots in between the text means I have truncated the output for the sake of saving characters in this README, in practice you will get the whole sentence with the desired output.
+   - `<pause>` tag can be used to have breaks in between sentences. for example `Count to 4 <pause> 4 </pause> Inhale. Count to 4 <pause>4<exhale>` will cause the speaker (TTS model) to wait for 4 seconds twice.
+   - NOTE: The dots in between the text means I have truncated the output for the sake of saving characters in this README, in practice you will get the whole sentence with the desired output.
  
 ### TTS model testing
 
