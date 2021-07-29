@@ -17,8 +17,8 @@
             "ref_level_db": 0,     // reference level db, theoretically 20db is the sound of air.
 
             // Griffin-Lim
-            "power": 1.3,           // value to sharpen wav signals after GL algorithm.
-            "griffin_lim_iters": 60,// #griffin-lim iterations. 30-60 is a good range. Larger the value, slower the generation.
+            "power": 1.4,           // value to sharpen wav signals after GL algorithm.
+            "griffin_lim_iters": 70,// #griffin-lim iterations. 30-60 is a good range. Larger the value, slower the generation.
 
             // Silence trimming
             "do_trim_silence": true,// enable trimming of slience of audio as you load it. LJspeech (false), TWEB (false), Nancy (true)

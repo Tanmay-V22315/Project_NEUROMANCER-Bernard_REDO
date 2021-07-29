@@ -1,4 +1,4 @@
-from json import loads
+from io import TextIOBase
 import sys
 
 def getTextInBetween(inputtext, tagstart, tagend):
@@ -13,14 +13,11 @@ def Txtpreprocessor(inputstring):
     #Alias tag encloses a dictionary which can be used for replacements and stuff.
     if "<alias>" in inputstring:
         assert "</alias>" in inputstring, "<alias> tag was not closed with </alias>"
-
         try:
             aliasdict = eval(inputstring[inputstring.index("<alias>")+len("<alias")+1:inputstring.index("</alias>")])
         except:
             return "Something is wrong with the alias specification. Make sure that tags only enclose the dictionary."
-
         inputstring = inputstring[inputstring.index("</alias>")+len("</alias>")+1:]
-
         for i in aliasdict.keys():
             inputstring = inputstring.replace(i,aliasdict[i])
 
@@ -43,26 +40,6 @@ def Txtpreprocessor(inputstring):
         
         
         return Txtpreprocessor(inputstring)
-    
-    elif "<cardinal>" in inputstring: 
-        assert "</cardinal>" in inputstring, "<cardinal> tag was not closed with </cardinal>"
-
-    elif "<pause>" in inputstring:
-        assert "</pause>" in inputstring, "<pause> tag was not closed with </pause>"
-        try:
-            duration = int(getTextInBetween(inputstring, "<pause>", "</pause>").replace(" ",""))
-            return duration
-        except ValueError:
-            print("FATAL: <pause> request contained non-integer characters, exiting....")
-            print("=====\n")
-            print("DEBUG INFO: ")
-            print("=========== \n")
-            print("The complete input string was: "+ str(inputstring))
-            print("The problematic <pause> request was: "+str(getTextInBetween(inputstring, "<pause>", "</pause>").replace(" ","")))
-            sys.exit
-
-        
-
 
 
     else:
@@ -74,4 +51,32 @@ def Txtpreprocessor(inputstring):
 
 
 
-print(Txtpreprocessor("Count to 4. <pause> 4 </pause> Inhale. Count to 4. <pause> 4 </pause> Exhale." ))
+def pauseProcessor(inputstring):
+    proccache=[inputstring]
+    responselist = []
+    for _ in range(0,inputstring.count("<pause>")):
+        toBeProcessed = proccache[-1]
+        try:
+            duration = floatd(getTextInBetween(toBeProcessed, "<pause>", "</pause>").replace(" ",""))
+            beginningChunk=toBeProcessed[0:toBeProcessed.index("<pause>")]
+            endingChunk=toBeProcessed[toBeProcessed.index("</pause>")+len("</pause>"):]
+            responselist.append(beginningChunk)
+            responselist.append(duration)
+            if "<pause>" not in endingChunk:
+                responselist.append(endingChunk)
+            else:
+                proccache.append(endingChunk)
+
+        except ValueError:
+            print("FATAL: <pause> request contained non-integer characters, exiting....")
+            print("=====\n")
+            print("DEBUG INFO: ")
+            print("=========== \n")
+            print("The complete input string was: "+str(inputstring))
+            print("The problematic <pause> request was: "+str(getTextInBetween(inputstring, "<pause>", "</pause>").replace(" ","")))
+            sys.exit()
+    
+    return responselist
+
+
+

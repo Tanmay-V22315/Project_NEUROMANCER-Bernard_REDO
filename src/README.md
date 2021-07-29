@@ -17,7 +17,7 @@ In that step, the following *"corrections"* have been made
 - I have, well, *discovered*, for the lack of a better term, a newer, more....*robust* method for user intent-classification through which I hope to increase the accuracy of the whole thing while also more comfortably handling various categories of inputs.
 - Made the whole project more modular, with support for community mods while making it easier to make them (if that ever happens, that is) and making it generally easier to adopt this project for personal/business purposes. (unlikely but still..)
 - Latex PDF documentation will be out soon, once I am actually done with the project (Come on, I'm, like, the only person working on this project).
-- Made better use of Rust for speed-up in certain places (or maybe Zig, certainly not C++ 'cause f*** C++)
+- Made better use of Rust for speed-up in certain places 
 - A new TTS model (Thanks to [Coqui TTS](https://github.com/coqui-ai/TTS)), ditching the older *"Proof-Of-Concept"* Cortana version, which used tacotron2, which from my "research", is slower than Glow-TTS. (Also it doesn't sound that good)
 - A more user-friendly and understandable config file.
 - Take heed regarding licensing stuff. (I didn't get into any trouble last time, but just to stay safe)
@@ -28,10 +28,16 @@ In that step, the following *"corrections"* have been made
 ### Currently working on:
 - [ ] <u> **Text to speech** </u>:
 - *Roadmap*:
-    - [X] Obtain data for a *certain* speaker. (Done)
-    - [ ] Transcribe and generate metadata (**W.I.P**) (being done by **Keval Shah**)
+    - [X] Obtain data for a *certain* speaker. 
+    - [X] Transcribe and generate metadata (thanks to [Keval Shah](https://github.com/toxicshady22))
     - [ ] Train with Coqui TTS
+        - [X] Train model
+        - [ ] Train Vocoder
     - [X] "Deploy" (**W.I.P**)
+        - [ ] Make it usable
+        - [ ] Additional Stuff
+            - [ ] Autocorrect
+            - [X] (custom) SSML support 
 
 ### Next up:
 - [ ] <u> **Natural language processing** </u> (**Categorising user input** *a.k.a* **NLP** *a.k.a* **the worst nightmare** *a.k.a* **I'm not going to be sleeping for a few days** :( )

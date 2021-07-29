@@ -17,7 +17,8 @@
         ":": " colon ",
         ";": " semi colon ",
         "  ": " ",
-        "|": " pipe "
+        "|": " pipe ",
+        "=": " equal to "
         
     },
     
