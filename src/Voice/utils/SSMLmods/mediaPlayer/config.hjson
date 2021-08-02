@@ -27,7 +27,7 @@
         "License":"MIT",
         "LicenseFile":null,
         "Author":"Tanmay Vemuri",
-        "Description": "This mod's <media> tag inserts an audio file into the synthesized voice."
+        "Description": "This mod's <media> tag inserts an audio file into the synthesized voice. This mod only accepts audio in the form of monochannel .wav, no limit on sample rate but it's a good idea to stick to commonly used sample rates. (e.g. 16000, 22050, 44100 etc.) "
     }
     
 }
