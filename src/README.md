@@ -30,14 +30,14 @@ In that step, the following *"corrections"* have been made
 - *Roadmap*:
     - [X] Obtain data for a *certain* speaker. 
     - [X] Transcribe and generate metadata (thanks to [Keval Shah](https://github.com/toxicshady22))
-    - [ ] Train with Coqui TTS
+    - [X] Train with Coqui TTS
         - [X] Train model
-        - [ ] Train Vocoder
+        - [X] Train Vocoder
     - [X] "Deploy" (**W.I.P**)
-        - [ ] Make it usable
+        - [X] Make it usable
         - [ ] Additional Stuff
-            - [ ] Autocorrect
             - [X] (custom) SSML support 
+            - [ ] SSML mods
 
 ### Next up:
 - [ ] <u> **Natural language processing** </u> (**Categorising user input** *a.k.a* **NLP** *a.k.a* **the worst nightmare** *a.k.a* **I'm not going to be sleeping for a few days** :( )
@@ -61,5 +61,6 @@ Here you can see my sanity waning.....and also see me finding out about some coo
 > - I had to rename the TTS folder because my dumbass didn't realise that that could cause conflicts with the actual Coqui TTS package.
 > - While lurking in Coqui TTS repositories' Issues tab, I found out about [SSML](https://cloud.google.com/text-to-speech/docs/ssml) so ig we're working on that now 
 > - Keval Shah (a class-mate) has started working on the project as a collaborator.
-> - (25/7/2021) Just replaced Pop!OS with Manjaro, lost all of my stuff in the process (except my code and other stuff, besides I had made a backup of the entire /home directory so I'm safe anyway). Sorting things out, shouldn't take too long.
+> - (25/7/2021) Just replaced Pop!OS with Manjaro on my laptop, lost all of my stuff in the process (except my code and other stuff, besides I had made a backup of the entire /home directory so I'm safe anyway). Sorting things out, shouldn't take too long.
 > - I'm going to include the option to choose between the Debian installation process (as you can tell, for Debian-based distros) and Arch installation process during the `make` command.....you get the idea
+> - Introducing support for mods, starting with SSML.

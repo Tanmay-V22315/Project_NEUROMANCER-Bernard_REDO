@@ -1,0 +1,33 @@
+{
+    //THIS IS A SAMPLE SSML FILE. Use this as a template to create your own mods
+    "modtype": "SSML"
+    "tagStart": "<media>",
+    "tagEnd":"</media>",
+    //If you have multiple python files and the code is divided between those, you have to specify the one that will return the required values (even if you have a single file, you have to specify it here). 
+    // The main() function within that will be called during execution.
+    "fileNameToBeExecuted": "mediaPlayer",
+
+    //If you want this mod to execute, useful for debugging and saving time sometimes and what have you.
+    shouldExecute: true,
+
+    //TODO(pNpm): Generate a requirements.txt file for all packages being installed at the same time.
+    "modulesRequired":["soundfile","sounddevice","os"],
+    "pythonVersion": 3.8,
+    //If the mod is experimental, a notice is given during usage and installation, warning users regarding instabilites and potential problems. Use this only if you are still developing the mod or the mod is known to fail in certain cases
+    "isModExperimental": true,
+
+    //TYPES: direct: Directly Edits the elements in list passed to speak() function in voice.py, after TxtPreprocessor() and pauseProcessor() (<pause> can't be used here but you can pass a zero array with the number of zeroes being the sample rate * time in seconds)
+    //       replacement: Edits the string before TxtPreprocessor() in SSMLpostprocessor.py
+    //       audio: edits the array formed after Inference. If you want to do some DSP stuff or add audio filters or whatever, you can do that now but you must be aware that
+                  //the main() function in "filenameToBeExecuted" will get a list as input, in place of a string.
+    "type": "direct",
+
+    //Stuff in here is optional. These will be printed during installation and occasionally during usage.
+    "additionalInfo":{
+        "License":"MIT",
+        "LicenseFile":null,
+        "Author":"Tanmay Vemuri",
+        "Description": "This mod's <media> tag inserts an audio file into the synthesized voice."
+    }
+    
+}

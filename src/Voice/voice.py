@@ -20,12 +20,14 @@ import hjson
 import numpy as np
 import os
 import sys
-from utils.SSMLPostprocessor import Txtpreprocessor, pauseProcessor
+from utils.SSMLPostprocessor import Txtpreprocessor, pauseProcessor, modProcessor
 
-chars = hjson.load(open(os.path.dirname(os.path.realpath(__file__))+"/resources.json"))
+fileDir = os.path.dirname(os.path.realpath(__file__))
+
+chars = hjson.load(open(fileDir+"/resources.json"))
 #Model name and config file name should be corresponding with the paramters called in the function (Otherwise you're free to edit the code but I doubt it will be pleasant down the road)
-synthesizer = Synthesizer(os.path.dirname(os.path.realpath(__file__))+"/model/model_file.pth.tar", os.path.dirname(os.path.realpath(__file__))+"/model/config.json", None, None, True) 
-sample_rate = 22050
+synthesizer = Synthesizer(fileDir+"/model/model_file.pth.tar", fileDir+"/model/config.json", None, None, True) 
+sample_rate=hjson.load(open(fileDir+"/model/config.json"))["audio"]["sample_rate"]
 
 from nltk.tokenize import RegexpTokenizer
   
@@ -51,21 +53,21 @@ def enablePrint(mode2="release"):
 
 
 
-def speak(cleanedText: str, mode: str="release"):
+def speak(cleanedText: str, mode: str="release", samplerate=sample_rate):
     blockPrint(mode)
     wav = synthesizer.tts(cleanedText) #Generate a list with the frequencies. You'll have to mess about with the source code if you want to use a multispeaker model. Since that isn't a realistic need, I didn't really bother with it.
     enablePrint(mode)
-    sd.play(np.array(wav), sample_rate) #Play the actual audio
-    time.sleep(len(wav)/sample_rate) #Derive the time duration of the audio to be played by dividing the number of elements in the list by the sample rate. (ngl, I didn't think this would work, not this well anyway)
+    sd.play(np.array(wav), samplerate) #Play the actual audio
+    time.sleep(len(wav)/samplerate) #Derive the time duration of the audio to be played by dividing the number of elements in the list by the sample rate. (ngl, I didn't think this would work, not this well anyway)
     sd.stop()
 
 
 def cleanspeak(inputtext="Some error has occured.", mode="release"): #Sorry for the ominous/weird name. What I mean with the name is to clean up the input text and then speak. This is pretty important because in certain cases, in input text you might see stuff like ".." or something and that *will* f*** with the text-to-speech, causing an unnecessary/unexpected failure.
     if mode=="debug":
         print("In debugging mode")
+
     time1 = time.perf_counter()
-    
-    
+       
     fintext = inputtext #preserve input for future purposes (i.e. debugging stuff)
 
     
@@ -76,13 +78,18 @@ def cleanspeak(inputtext="Some error has occured.", mode="release"): #Sorry for 
     
     
     print(inputtext) #print the final text (which would be the output from the perspective of NLG)
-    print(fintext)
-
+    fintext = [fintext]
     if type(fintext)==list:
-        for i in fintext:
-           
+        for i in modProcessor("direct",fintext):    
+            print(i)      
             if type(i)==float:
+                #return a float if you wish the speaker to stop for sometime during mod.
                 time.sleep(i)
+            elif type(i)==list:
+                #if you wish to play an audio file through mods, you have to return a list with the first element being the signal array and the second element being the sample rate. You also have to set the mod type in your mod's hjson file to "direct"
+                sd.play(i[0], i[1])
+                time.sleep(len(i[0])/i[1])
+                sd.stop()
             else:
                 speak(textCleanupandFormatting(i), mode)
     else:
