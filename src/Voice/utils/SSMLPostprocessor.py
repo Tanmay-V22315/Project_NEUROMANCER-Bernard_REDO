@@ -1,6 +1,9 @@
 import sys
 import hjson
 import os
+import numpy as np
+import warnings
+
 
 directoryOfThisFile = os.path.dirname(os.path.realpath(__file__))
 
@@ -12,7 +15,7 @@ def getTextInBetween(inputtext, tagstart, tagend):
 
 #The somewhat "Recursive" function will break automatically if no more tags are found, so don't worry about hitting max recursion depth....unless it does happen in which case, please let me know
 def Txtpreprocessor(inputstring):
-    
+        
     #Alias tag encloses a dictionary which can be used for replacements and stuff.
     if "<alias>" in inputstring:
         assert "</alias>" in inputstring, "<alias> tag was not closed with </alias>"
@@ -81,34 +84,57 @@ def pauseProcessor(inputstring):
     
     return responselist
 
-
-
+#This is not the best solution, but due to lack of time, I do not wish to dwell on this any longer.
+#TODO: Fix this 
 def modProcessor(mode, modifiable):
-    print("modProcessor() is being called")
-    for (root,dirs,files) in os.walk(directoryOfThisFile+'/SSMLmods', topdown=True):
-        sys.path.append(root)
-        if files!=[]:
-            if files[files.index("config.hjson")]:
-                config = hjson.load(open(root+"/config.hjson"))
-                if mode=="direct":
-                    return directModProcessor(modifiable, config['tagStart'],config['tagEnd'],config['fileNameToBeExecuted'])
-                    
-
-
-def directModProcessor(processedList: list, tagStart, tagEnd, fileName):
+    for item in os.listdir(directoryOfThisFile+"/SSMLmods"):
+        directoryOfMod=directoryOfThisFile+"/SSMLmods/"+item
     
+        if directoryOfMod not in sys.path:
+            sys.path.append(directoryOfMod)
+
+        if "config.hjson" in os.listdir(directoryOfMod):
+            modConfig = hjson.load(open(directoryOfMod+"/config.hjson"))
+        if modConfig['shouldExecute'] is True:
+            if modConfig['isModExperimental']==True:
+                warnings.warn("This mod ("+modConfig["modName"]+") has been marked as Experimental. Use at your own risk. To disable this mod, use pNpm or set 'shouldExecute' in the mod's config.json to false.")
+
+            if modConfig['type']==mode and mode=="replacement":
+                return replacementModProcessor(modifiable, modConfig['tagStart'], modConfig['tagEnd'], modConfig['fileNameToBeExecuted'])
+            elif modConfig['type']==mode and mode=="direct":
+                return directModProcessor(modifiable, modConfig['tagStart'], modConfig['tagEnd'],modConfig['fileNameToBeExecuted'])
+            elif modConfig['type']==mode and mode=="audio":
+                return audioModProcessor(modifiable, modConfig['fileNameToBeExecuted'])
+        else:
+            return modifiable
+                
+
+
+def directModProcessor(processedList: list, tagStart: str, tagEnd: str, fileName: str):
     for chunkOfSentence in processedList:
-        if tagStart in chunkOfSentence and type(chunkOfSentence)==str:
-            assert tagEnd in chunkOfSentence, tagStart+" was not closed with "+tagEnd
+        if type(chunkOfSentence)==str and tagStart in chunkOfSentence :
+            assert tagEnd in chunkOfSentence, tagStart+" was not closed with "+tagEnd+" (Mod's file name is: "+fileName+")"
             chunkOfSentenceInBetween = getTextInBetween(inputtext=chunkOfSentence,tagstart=tagStart, tagend=tagEnd)
             exec("import "+fileName)
-            #Example this is what a gobbledegookynatorifier sounds like <media>/home/randomaccessvemuri/Downloads/output.wav</media> . Sounds interesting, doesn't it?
             indexOfChunk = processedList.index(chunkOfSentence) 
             modOutput = eval(fileName+".main(chunkOfSentenceInBetween)")
             processedList[indexOfChunk:indexOfChunk+1]=chunkOfSentence[0:chunkOfSentence.index(tagStart)], modOutput, chunkOfSentence[chunkOfSentence.index(tagEnd)+len(tagEnd):]
-
-    print(processedList)
     return processedList
 
 
 
+def replacementModProcessor(stringinput: str, tagStart: str, tagEnd: str, fileName: str):
+    if tagStart in stringinput:
+        assert tagEnd in stringinput, tagStart+" was not closed with "+tagEnd
+        requiredChunk = getTextInBetween(stringinput, tagStart, tagEnd)
+        exec("import "+fileName)
+        modOutput = eval(fileName+".main(requiredChunk)")
+        stringinput=stringinput.replace(tagStart+requiredChunk+tagEnd, modOutput)
+        return stringinput
+        
+    else:
+        return stringinput
+
+def audioModProcessor(audioSignalArray: list, fileName: str) -> list or np.ndarray:
+    exec("import "+fileName)
+    return eval(fileName+".main(audioSignalArray)")

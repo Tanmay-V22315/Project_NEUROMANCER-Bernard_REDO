@@ -1,0 +1,28 @@
+{
+    "versionNumber":0.1,
+    "modName":"mathSolver",
+    "modtype": "SSML"
+    "tagStart": "<mathSolve>",
+    "tagEnd":"</mathSolve>",
+    
+    "fileNameToBeExecuted": "inlineMathSolver",
+
+    shouldExecute: true,
+
+    "modulesRequired":["math"],
+    "pythonVersion": 3.8,
+
+    "isModExperimental": false,
+
+    //This type of mod will ONLY accept string input. Cannot return integer or a list. For that, look into "direct" type mods
+    "type": "replacement",
+
+    "additionalInfo":{
+        "License":"MIT",
+        "LicenseFile":null,
+        "Author":"Tanmay Vemuri",
+        //TODO: wolframMathSolver
+        "Description": "Solves math stuff like <mathSolve> 45+78 </mathSolve> or <mathSolve> (789/123)**2 </mathSolve> or whatever. use wolframMathSolver to make use of the Wolfram engine. It is slower but much more versatile."
+    }
+    
+}

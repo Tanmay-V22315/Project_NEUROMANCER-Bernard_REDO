@@ -1,0 +1,27 @@
+{
+    "versionNumber":0.1,
+    "modName":"Amplifier",
+    "modtype": "SSML"
+    //Tags needn't be defined so you can ignore those.
+    
+    
+    "fileNameToBeExecuted": "amplifier",
+
+    shouldExecute: true,
+
+    "modulesRequired":["numpy", "pydub", "hjson"],
+    "pythonVersion": 3.8,
+
+    "isModExperimental": false,
+
+    "type": "audio",
+
+    "additionalInfo":{
+        "License":"MIT",
+        "LicenseFile":null,
+        "Author":"Tanmay Vemuri",
+        //TODO: wolframMathSolver
+        "Description": "A simple mod that increases the amplitude of the TTS output artificially by multiplying a constant to the TTS output.. Since I'm not proficient with DSP (actually, I don't know jacksh** about DSP), this is the best I could come up with for now."
+    }
+    
+}

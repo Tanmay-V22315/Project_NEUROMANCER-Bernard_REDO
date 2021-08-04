@@ -14,6 +14,7 @@
 #importing and setting up some stuff
 
 import time
+import warnings
 import sounddevice as sd
 from TTS.utils.synthesizer import Synthesizer
 import hjson
@@ -57,43 +58,47 @@ def speak(cleanedText: str, mode: str="release", samplerate=sample_rate):
     blockPrint(mode)
     wav = synthesizer.tts(cleanedText) #Generate a list with the frequencies. You'll have to mess about with the source code if you want to use a multispeaker model. Since that isn't a realistic need, I didn't really bother with it.
     enablePrint(mode)
-    sd.play(np.array(wav), samplerate) #Play the actual audio
+    sd.play(modProcessor("audio", np.array(wav)), samplerate) #Play the actual audio
     time.sleep(len(wav)/samplerate) #Derive the time duration of the audio to be played by dividing the number of elements in the list by the sample rate. (ngl, I didn't think this would work, not this well anyway)
     sd.stop()
 
 
 def cleanspeak(inputtext="Some error has occured.", mode="release"): #Sorry for the ominous/weird name. What I mean with the name is to clean up the input text and then speak. This is pretty important because in certain cases, in input text you might see stuff like ".." or something and that *will* f*** with the text-to-speech, causing an unnecessary/unexpected failure.
+    
     if mode=="debug":
         print("In debugging mode")
 
     time1 = time.perf_counter()
        
-    fintext = inputtext #preserve input for future purposes (i.e. debugging stuff)
 
+    fintext = inputtext #preserve input for future purposes (i.e. debugging stuff)
+    
     
     if "<pause>" in fintext:
-        fintext =pauseProcessor(Txtpreprocessor(fintext))
+        fintext =pauseProcessor(Txtpreprocessor(modProcessor("replacement", fintext)))
     else:
-        fintext =Txtpreprocessor(fintext)
+        fintext =Txtpreprocessor(modProcessor("replacement", fintext))
     
     
-    print(inputtext) #print the final text (which would be the output from the perspective of NLG)
-    fintext = [fintext]
-    if type(fintext)==list:
-        for i in modProcessor("direct",fintext):    
-            print(i)      
-            if type(i)==float:
-                #return a float if you wish the speaker to stop for sometime during mod.
-                time.sleep(i)
-            elif type(i)==list:
-                #if you wish to play an audio file through mods, you have to return a list with the first element being the signal array and the second element being the sample rate. You also have to set the mod type in your mod's hjson file to "direct"
-                sd.play(i[0], i[1])
-                time.sleep(len(i[0])/i[1])
-                sd.stop()
-            else:
-                speak(textCleanupandFormatting(i), mode)
-    else:
-        speak(textCleanupandFormatting(fintext))
+    if type(fintext)!=list:
+        fintext = [fintext]
+
+    #The comments in the following for-loop is only for "direct" mods
+    for chunk in modProcessor("direct",fintext):     
+        if type(chunk)==float:
+            #return a float if you wish the speaker to stop for sometime during mod.
+            time.sleep(chunk)
+        elif type(chunk)==list:
+            #if you wish to play an audio file or just any array of audio signals through mods, you have to return a list with the first element being the signal array and the second element being the sample rate. You also have to set the mod type in your mod's hjson file to "direct"
+            sd.play(chunk[0], chunk[1])
+            time.sleep(len(chunk[0])/chunk[1])
+            sd.stop()
+        elif chunk=='':
+            warnings.warn("Empty string was passed to TTS")
+        else:
+            print(chunk)
+            speak(textCleanupandFormatting(chunk), mode)
+    
     
 
 
@@ -114,21 +119,25 @@ def cleanspeak(inputtext="Some error has occured.", mode="release"): #Sorry for 
 
 
 def textCleanupandFormatting(textToBeCleanedUp):
-    textToBeCleanedUp = tokenizer.tokenize(textToBeCleanedUp)
-    for i in chars["aexpansions"].keys():
-        if i in textToBeCleanedUp:
-            textToBeCleanedUp[textToBeCleanedUp.index(i)]=chars["aexpansions"][i]
+    if textToBeCleanedUp!='':
+        textToBeCleanedUp = tokenizer.tokenize(textToBeCleanedUp)
+        for i in chars["aexpansions"].keys():
+            if i in textToBeCleanedUp:
+                textToBeCleanedUp[textToBeCleanedUp.index(i)]=chars["aexpansions"][i]
 
-    for i in chars["slangs"].keys():
-        if i in textToBeCleanedUp:
-            textToBeCleanedUp[textToBeCleanedUp.index(i)]=chars["slangs"][i]
+        for i in chars["slangs"].keys():
+            if i in textToBeCleanedUp:
+                textToBeCleanedUp[textToBeCleanedUp.index(i)]=chars["slangs"][i]
 
-    textToBeCleanedUp = " ".join(textToBeCleanedUp)
-    
-    for i in chars['problemchars'].keys():
-        if i in textToBeCleanedUp:
-            textToBeCleanedUp = textToBeCleanedUp.replace(i, chars['problemchars'][i])
+        textToBeCleanedUp = " ".join(textToBeCleanedUp)
+        
+        for i in chars['problemchars'].keys():
+            if i in textToBeCleanedUp:
+                textToBeCleanedUp = textToBeCleanedUp.replace(i, chars['problemchars'][i])
 
-    if textToBeCleanedUp.strip()[-1] not in [".", "?", "!", ";", ","]:
-        textToBeCleanedUp = textToBeCleanedUp+"."
-    return textToBeCleanedUp
+        if textToBeCleanedUp.strip()[-1] not in [".", "?", "!", ";", ","]:
+            textToBeCleanedUp = textToBeCleanedUp+"."
+        return textToBeCleanedUp
+    else:
+        warnings.warn("Empty string was passed to TTS")
+        return ''

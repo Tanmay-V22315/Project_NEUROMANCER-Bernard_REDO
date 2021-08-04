@@ -1,0 +1,6 @@
+//You don't need to create a config file. This file is independent from the actual SSML stuff and only the amplifier.py uses this.
+{
+    //Less than 1 will reduce the amplitude, more than 1 will increase the amplitude. If you're setting this to 1, you might as well disable it in the config.hjson of the mod
+    //Don't set this too high (like 3-4) otherwise you'll be losing your ears.
+    "multiplierConstant": 2.0
+}
