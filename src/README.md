@@ -25,30 +25,7 @@ In that step, the following *"corrections"* have been made
 
 
  ## Granular Roadmap:
-### Currently working on:
-- [ ] <u> **Text to speech** </u>:
-- *Roadmap*:
-    - [X] Obtain data for a *certain* speaker. 
-    - [X] Transcribe and generate metadata (thanks to [Keval Shah](https://github.com/toxicshady22))
-    - [X] Train with Coqui TTS
-        - [X] Train model
-        - [X] Train Vocoder
-    - [X] "Deploy" (**W.I.P**)
-        - [X] Make it usable
-        - [ ] Additional Stuff
-            - [X] (custom) SSML support 
-            - [ ] SSML mods
-
-### Next up:
-- [ ] <u> **Natural language processing** </u> (**Categorising user input** *a.k.a* **NLP** *a.k.a* **the worst nightmare** *a.k.a* **I'm not going to be sleeping for a few days** :( )
-
-### Then:
-- [ ] <u> **STT** </u> (This one is "easier" since most of my work is already done)
-
-### Finally:
-- [ ] <u>**NLG**</u> (*a.k.a* **Natural Language generation** *a.k.a* **My second worst nightmare**)
-
-(P.S there's no particular reason for this order. I just randomly selected them since they are all isolated from each other anyway, in a manner of speaking.)
+ **Moved to Github Projects**
 
 
  ## Devlogs:
