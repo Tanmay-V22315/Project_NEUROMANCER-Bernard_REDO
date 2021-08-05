@@ -94,19 +94,19 @@ def modProcessor(mode, modifiable):
             sys.path.append(directoryOfMod)
 
         if "config.hjson" in os.listdir(directoryOfMod):
-            modConfig = hjson.load(open(directoryOfMod+"/config.hjson"))
-        if modConfig['shouldExecute'] is True:
-            if modConfig['isModExperimental']==True:
-                warnings.warn("This mod ("+modConfig["modName"]+") has been marked as Experimental. Use at your own risk. To disable this mod, use pNpm or set 'shouldExecute' in the mod's config.json to false.")
+            with  hjson.load(open(directoryOfMod+"/config.hjson")) as modConfig:
+                if modConfig['shouldExecute'] is True:
+                    if modConfig['isModExperimental']==True:
+                        warnings.warn("This mod ("+modConfig["modName"]+") has been marked as Experimental. Use at your own risk. To disable this mod, use pNpm or set 'shouldExecute' in the mod's config.json to false.")
 
-            if modConfig['type']==mode and mode=="replacement":
-                return replacementModProcessor(modifiable, modConfig['tagStart'], modConfig['tagEnd'], modConfig['fileNameToBeExecuted'])
-            elif modConfig['type']==mode and mode=="direct":
-                return directModProcessor(modifiable, modConfig['tagStart'], modConfig['tagEnd'],modConfig['fileNameToBeExecuted'])
-            elif modConfig['type']==mode and mode=="audio":
-                return audioModProcessor(modifiable, modConfig['fileNameToBeExecuted'])
-        else:
-            return modifiable
+                    if modConfig['type']==mode and mode=="replacement":
+                        return replacementModProcessor(modifiable, modConfig['tagStart'], modConfig['tagEnd'], modConfig['fileNameToBeExecuted'])
+                    elif modConfig['type']==mode and mode=="direct":
+                        return directModProcessor(modifiable, modConfig['tagStart'], modConfig['tagEnd'],modConfig['fileNameToBeExecuted'])
+                    elif modConfig['type']==mode and mode=="audio":
+                        return audioModProcessor(modifiable, modConfig['fileNameToBeExecuted'])
+                else:
+                    return modifiable
                 
 
 
