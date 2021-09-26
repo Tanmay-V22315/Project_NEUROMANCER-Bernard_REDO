@@ -1,4 +1,4 @@
-## Moved to [Gitlab](https://gitlab.com/Tanmay-V22315/Project_NEUROMANCER-Bernard_REDO)
+## Moved to [Gitlab](https://gitlab.com/Tanmay-V22315/Project_NEUROMANCER)
 # Project_NEUROMANCER-Bernard_REDO
  
  
